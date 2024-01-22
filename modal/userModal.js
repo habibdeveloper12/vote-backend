@@ -5,6 +5,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  userType: {
+    type: String,
+    default: "user",
+  },
   voterid: {
     type: String,
     required: true,
