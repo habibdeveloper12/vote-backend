@@ -45,11 +45,27 @@ exports.getSingleUser = async (req, res, next) => {
 
 exports.getUserByEmail = async (req, res, next) => {
   try {
-    const { email } = req.query;
+    const { voterid } = req.query;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ voterid });
 
     res.json(user);
+  } catch (error) {
+    console.error("Error fetching addresses:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+exports.postVote = async (req, res, next) => {
+  try {
+    const { voterid } = req.query;
+    const { voted } = req.body;
+    const updatedUser = await User.findOneAndUpdate(
+      { voterid },
+      { $set: { vote: voted } }, // Use $set to update the specific field
+      { new: true } // Set new to true to get the updated user document in the response
+    );
+    console.log(updatedUser);
+    res.json(updatedUser);
   } catch (error) {
     console.error("Error fetching addresses:", error);
     res.status(500).json({ error: "Internal Server Error" });
